@@ -16,12 +16,10 @@ import shopapi.web.dto.ShoppingCartResponse;
 public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
-    private final UserService userService;
 
     @Autowired
-    public ShoppingCartController(ShoppingCartService shoppingCartService, UserService userService) {
+    public ShoppingCartController(ShoppingCartService shoppingCartService) {
         this.shoppingCartService = shoppingCartService;
-        this.userService = userService;
     }
 
     @GetMapping("/shopping-cart")
