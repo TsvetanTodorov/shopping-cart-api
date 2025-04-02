@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shopapi.exception.DomainException;
 import shopapi.user.User;
-import shopapi.user.UserRepository;
 import shopapi.user.UserService;
 import shopapi.web.dto.UserRequest;
 import shopapi.web.dto.UserResponse;
@@ -61,10 +60,14 @@ public class UserController {
 
         boolean isDeleted = userService.deleteUserByEmail(email);
 
-        if(isDeleted){
-            return ResponseEntity.status(HttpStatus.OK).body("User with email: " + email + " deleted successfully");
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with email: " + email + " not found");
+        if (isDeleted){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("User with email: " + email + " deleted successfully");
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("User with email: " + email + " not found");
         }
     }
 
