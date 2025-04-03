@@ -10,7 +10,6 @@ import shopapi.user.UserService;
 import shopapi.web.dto.ShoppingCartResponse;
 
 
-
 @RestController
 @RequestMapping("/api/v1/shopping-carts")
 public class ShoppingCartController {
@@ -25,18 +24,16 @@ public class ShoppingCartController {
     @GetMapping("/shopping-cart")
     public ResponseEntity<ShoppingCartResponse> getShoppingCartByUserEmail(@RequestParam String email) {
 
-        try{
+        try {
             ShoppingCartResponse responseDto = shoppingCartService.getShoppingCartByUserEmail(email);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(responseDto);
-        }catch (DomainException e){
+        } catch (DomainException e) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
-
-
 
 
     }
