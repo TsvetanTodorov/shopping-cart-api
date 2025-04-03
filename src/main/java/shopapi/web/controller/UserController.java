@@ -12,6 +12,7 @@ import shopapi.web.dto.UserRequest;
 import shopapi.web.dto.UserResponse;
 import shopapi.web.mapper.DtoMapper;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,15 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponse>> getUsers() {
 
-        return ResponseEntity.ok(userService.getAllUsers());
+        List<UserResponse> responses = userService.getAllUsers()
+                .stream()
+                .map(DtoMapper::fromUser)
+                .sorted(Comparator.comparing(UserResponse::getFirstName))
+                .toList();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responses);
     }
 
     @GetMapping("/email")
@@ -60,7 +69,7 @@ public class UserController {
 
         boolean isDeleted = userService.deleteUserByEmail(email);
 
-        if (isDeleted){
+        if (isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body("User with email: " + email + " deleted successfully");
@@ -72,14 +81,14 @@ public class UserController {
     }
 
     @PutMapping("/update-user")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody @Valid UserRequest request){
+    public ResponseEntity<UserResponse> updateUser(@RequestBody @Valid UserRequest request) {
 
         try {
             UserResponse response = userService.updateUser(request);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(response);
-        }catch (DomainException e){
+        } catch (DomainException e) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);

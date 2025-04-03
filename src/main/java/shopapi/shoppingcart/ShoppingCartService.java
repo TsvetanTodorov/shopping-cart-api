@@ -1,13 +1,10 @@
 package shopapi.shoppingcart;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import shopapi.exception.DomainException;
-import shopapi.user.UserService;
 import shopapi.web.dto.ShoppingCartResponse;
 import shopapi.web.mapper.DtoMapper;
-
 
 
 @Service
@@ -21,12 +18,12 @@ public class ShoppingCartService {
     }
 
     public ShoppingCart createShoppingCart(ShoppingCart shoppingCart) {
-       return shoppingCartRepository.save(shoppingCart);
+        return shoppingCartRepository.save(shoppingCart);
     }
 
 
     public void deleteShoppingCart(ShoppingCart shoppingCart) {
-        if(shoppingCartRepository.existsById(shoppingCart.getId())) {
+        if (shoppingCartRepository.existsById(shoppingCart.getId())) {
             shoppingCartRepository.delete(shoppingCart);
         }
     }

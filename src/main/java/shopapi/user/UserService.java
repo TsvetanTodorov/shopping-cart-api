@@ -12,6 +12,7 @@ import shopapi.web.dto.UserResponse;
 import shopapi.web.mapper.DtoMapper;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,9 +30,9 @@ public class UserService {
     }
 
 
-    public User createUser( UserRequest dto) {
+    public User createUser(UserRequest dto) {
 
-        if(userRepository.existsByEmail(dto.getEmail())) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
             throw new DomainException("Email address already in use: [%s]".formatted(dto.getEmail()));
         }
 
@@ -55,19 +56,16 @@ public class UserService {
     }
 
 
-    public List<UserResponse> getAllUsers() {
+    public List<User> getAllUsers() {
 
-        return userRepository.findAll()
-                .stream()
-                .map(DtoMapper::fromUser)
-                .collect(Collectors.toList());
+        return new ArrayList<>(userRepository.findAll());
     }
 
     public User getUserByEmail(String email) {
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        if(optionalUser.isEmpty()) {
+        if (optionalUser.isEmpty()) {
             throw new DomainException("No such user with the given email: [%s]".formatted(email));
         }
 
@@ -79,7 +77,7 @@ public class UserService {
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             shoppingCartService.deleteShoppingCart(user.getShoppingCart());
             userRepository.delete(user);
@@ -95,7 +93,7 @@ public class UserService {
 
         Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
 
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
             user.setFirstName(request.getFirstName());
